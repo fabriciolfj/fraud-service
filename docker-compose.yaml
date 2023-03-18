@@ -35,6 +35,7 @@ services:
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
+
   redis:
     image: "redis:6"
     container_name: "redis"
@@ -42,12 +43,6 @@ services:
       - 6379:6379
 
 networks:
-  my-network:
-    name: my-network
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 172.16.57.0/24
   kafka-net:
     name: kafka-net
     driver: bridge
