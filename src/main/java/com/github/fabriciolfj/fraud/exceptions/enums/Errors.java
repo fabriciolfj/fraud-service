@@ -5,7 +5,9 @@ import java.util.ResourceBundle;
 public enum Errors {
 
     FRAUD_TIME,
-    FRAUD_VALUE;
+    FRAUD_VALUE,
+    SAVE_FRAUD,
+    UPDATE_TRANSACTION;
 
     public String toMessage() {
         var bundle = ResourceBundle.getBundle("messages/exceptions");

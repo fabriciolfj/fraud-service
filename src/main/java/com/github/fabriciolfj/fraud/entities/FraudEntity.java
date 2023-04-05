@@ -14,8 +14,10 @@ import java.time.LocalDateTime;
 @Data
 public class FraudEntity {
 
+    private String code;
     private String transaciton;
     private LocalDateTime date;
+    private String customer;
     private BigDecimal value;
     private StatusFraudEntity status;
 
