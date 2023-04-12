@@ -18,7 +18,7 @@ public class FraudTimeUseCase implements FraudProcessingUseCase {
 
     @Override
     public FraudEntity execute(final FraudEntity entity) {
-        log.info("fraud time initial execute to transaction {}", entity.getTransaciton());
+        log.info("fraud time initial execute to transaction {}, time {}", entity.getTransaciton(), entity.getDate());
 
         var result = findLastTransactionGateway.process(entity);
 

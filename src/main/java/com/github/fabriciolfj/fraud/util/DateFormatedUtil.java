@@ -2,15 +2,13 @@ package com.github.fabriciolfj.fraud.util;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 
 public class DateFormatedUtil {
 
-    public static LocalDateTime toDateIso() {
-        var sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        var date = new Date();
 
-        var dateFormat = sdf.format(date);
-        return LocalDateTime.parse(dateFormat);
+    public static LocalDateTime ToLocalDateTime(final String value) {
+        var patter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        return LocalDateTime.parse(value, patter);
     }
 }

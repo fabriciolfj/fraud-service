@@ -13,8 +13,6 @@ import javax.enterprise.context.ApplicationScoped;
 import java.util.HashMap;
 import java.util.Optional;
 
-import static com.github.fabriciolfj.fraud.util.DateFormatedUtil.toDateIso;
-
 @ApplicationScoped
 @RequiredArgsConstructor
 public class FindTransactionTimeProvider implements FindLastTransactionGateway {
@@ -28,12 +26,15 @@ public class FindTransactionTimeProvider implements FindLastTransactionGateway {
     public Optional<String> process(final FraudEntity entity) {
         final var params = new HashMap<String, AttributeValue>();
         params.put(":customer", new AttributeValue().withS(entity.getCustomer()));
-        params.put(":date", new AttributeValue().withS(toDateIso().minusMinutes(Long.parseLong(timer)).toString()));
+
+        var date = entity.getDate()
+                .minusMinutes(Long.parseLong(timer));
+        params.put(":date", new AttributeValue().withS(date.toString()));
 
         final var query = new DynamoDBQueryExpression<FraudData>()
                 .withIndexName("dateCustomer-index")
                 .withConsistentRead(false)
-                .withKeyConditionExpression("customer = :customer and date_registry <= :date")
+                .withKeyConditionExpression("customer = :customer and date_registry >= :date")
                 .withExpressionAttributeValues(params);
 
         return fraudRepository.findData(query).map(FraudData::getTransaction);

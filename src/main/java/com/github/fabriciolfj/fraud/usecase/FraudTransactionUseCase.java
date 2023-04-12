@@ -19,17 +19,22 @@ public class FraudTransactionUseCase {
     private final SaveFraudGateway saveFraudGateway;
 
     public void execute(final FraudEntity entity) {
-        log.info("init processo to transaction {}", entity.getTransaciton());
+        log.info("init process to transaction {}", entity.getTransaciton());
 
         try {
-            var result = fraudProcessingUseCases.stream().map(e -> e.execute(entity))
-                    .toList().get(0);
+            var result = getResultProcess(entity);
 
             saveFraudGateway.process(result);
-            updateTransactionGateway.process(result.toApproved());
+            updateTransactionGateway.process(result);
         } catch (Exception e) {
             log.error("fraud detected to transaction {}, details {}", entity.getTransaciton(), e.getMessage());
             updateTransactionGateway.process(entity.toDisapproved());
         }
+    }
+
+    private FraudEntity getResultProcess(FraudEntity entity) {
+        return fraudProcessingUseCases.stream().map(e -> e.execute(entity))
+                .findFirst().get()
+                .toApproved();
     }
 }
