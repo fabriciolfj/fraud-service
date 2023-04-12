@@ -7,7 +7,8 @@ public enum Errors {
     FRAUD_TIME,
     FRAUD_VALUE,
     SAVE_FRAUD,
-    UPDATE_TRANSACTION;
+    UPDATE_TRANSACTION,
+    FRAUD_CASE;
 
     public String toMessage() {
         var bundle = ResourceBundle.getBundle("messages/exceptions");

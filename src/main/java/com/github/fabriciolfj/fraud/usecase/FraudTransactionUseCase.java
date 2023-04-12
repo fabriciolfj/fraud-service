@@ -3,6 +3,7 @@ package com.github.fabriciolfj.fraud.usecase;
 import com.github.fabriciolfj.fraud.entities.FraudEntity;
 import com.github.fabriciolfj.fraud.adapters.gateways.SaveFraudGateway;
 import com.github.fabriciolfj.fraud.adapters.gateways.UpdateTransactionGateway;
+import com.github.fabriciolfj.fraud.exceptions.FraudTransactionUseCaseException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,13 +29,12 @@ public class FraudTransactionUseCase {
             updateTransactionGateway.process(result);
         } catch (Exception e) {
             log.error("fraud detected to transaction {}, details {}", entity.getTransaciton(), e.getMessage());
-            updateTransactionGateway.process(entity.toDisapproved());
+            throw new FraudTransactionUseCaseException();
         }
     }
 
     private FraudEntity getResultProcess(FraudEntity entity) {
         return fraudProcessingUseCases.stream().map(e -> e.execute(entity))
-                .findFirst().get()
-                .toApproved();
+                .findFirst().get();
     }
 }

@@ -24,9 +24,9 @@ public class FraudTimeUseCase implements FraudProcessingUseCase {
 
         if (result.isPresent()) {
             log.warn("fraud time detected to transaction {}", entity.getTransaciton());
-            throw new FraudTimeException();
+            return entity.toDisapproved();
         }
 
-        return entity;
+        return entity.toApproved();
     }
 }
