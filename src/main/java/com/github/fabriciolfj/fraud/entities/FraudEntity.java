@@ -30,4 +30,16 @@ public class FraudEntity {
         this.status = StatusFraudEntity.APPROVED;
         return this;
     }
+
+    private boolean isHoursValid(final Integer hours) {
+        return date.getHour() >= hours;
+    }
+
+    private boolean isValueValid(final BigDecimal value) {
+        return value.compareTo(value) >= 0;
+    }
+
+    public boolean isTransactionValid(final BigDecimal value, final Integer hours) {
+        return isHoursValid(hours) && isValueValid(value);
+    }
 }
