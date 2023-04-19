@@ -34,7 +34,6 @@ public class FraudTransactionUseCase {
     }
 
     private FraudEntity getResultProcess(FraudEntity entity) {
-        return fraudProcessingUseCases.stream().map(e -> e.execute(entity))
-                .findFirst().get();
+        return fraudProcessingUseCases.stream().map(e -> e.execute(entity)).toList().get(0);
     }
 }
