@@ -1,7 +1,6 @@
 package com.github.fabriciolfj.fraud.usecase.impl;
 
 import com.github.fabriciolfj.fraud.entities.FraudEntity;
-import com.github.fabriciolfj.fraud.exceptions.FraudTimeException;
 import com.github.fabriciolfj.fraud.adapters.gateways.FindLastTransactionGateway;
 import com.github.fabriciolfj.fraud.usecase.FraudProcessingUseCase;
 import lombok.RequiredArgsConstructor;

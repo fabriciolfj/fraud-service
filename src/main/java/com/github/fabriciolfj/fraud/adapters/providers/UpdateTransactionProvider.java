@@ -3,7 +3,9 @@ package com.github.fabriciolfj.fraud.adapters.providers;
 import com.github.fabriciolfj.fraud.entities.FraudEntity;
 import com.github.fabriciolfj.fraud.adapters.gateways.UpdateTransactionGateway;
 import com.github.fabriciolfj.fraud.adapters.providers.http.TransactionHttpClient;
+import com.github.fabriciolfj.fraud.exceptions.UpdateTransactionStatusException;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.faulttolerance.Fallback;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
@@ -21,9 +23,14 @@ public class UpdateTransactionProvider implements UpdateTransactionGateway {
 
     @Override
     @Retry(maxRetries = 5, delayUnit = ChronoUnit.SECONDS, delay = 60, jitter = 50)
+    @Fallback(fallbackMethod = "fallbackTransaction")
     public void process(final FraudEntity entity) {
         log.info("process update status {}, to transaction {}", entity.getTransaciton(), entity.getStatus());
 
         client.process(entity.getTransaciton(), entity.getStatus().getDescribe());
+    }
+
+    public void fallbackTransaction(final FraudEntity entity) {
+        throw new UpdateTransactionStatusException();
     }
 }
