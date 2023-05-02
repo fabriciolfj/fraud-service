@@ -1,5 +1,7 @@
 package com.github.fabriciolfj.fraud.configuration;
 
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
@@ -33,6 +35,7 @@ public class DynamodClientConfiguration {
     @ApplicationScoped
     public DynamoDBMapper dynamoDBMapper() throws UnknownHostException {
         if (isLocal) {
+            var basic = new BasicAWSCredentials("1", "1");
             var config = DynamoDBMapperConfig
                     .builder()
                     .withSaveBehavior(DynamoDBMapperConfig.SaveBehavior.CLOBBER)
@@ -43,7 +46,7 @@ public class DynamodClientConfiguration {
             var client = AmazonDynamoDBClientBuilder
                     .standard()
                     .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(url, region))
-                    .withCredentials(new com.amazonaws.auth.profile.ProfileCredentialsProvider("localstack"))
+                    .withCredentials(new AWSStaticCredentialsProvider(basic))
                     .build();
 
             return new DynamoDBMapper(client, config);
