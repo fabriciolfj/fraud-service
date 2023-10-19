@@ -5,3 +5,4 @@
 - dynamodb
 - programação imperativa
 - fallback
+- multiplas instancias com quarkus
